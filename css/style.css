@@ -1,0 +1,281 @@
+:root {
+    --primary-color: #A4161A; 
+    --secondary-color: #BA181B;
+    --accent-color: #D4AF37;
+    --bg-color: #F5E6E8; /* Reverted to Original Soft Pink */
+    --text-color: #1A1A1D; /* Dark text for light bg */
+    
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-color); /* Original Solid Color */
+    color: var(--text-color);
+    overflow: hidden; /* NO SCROLLING */
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Floating Memories Background */
+#floating-memories {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10; /* Middle Layer (Images) */
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.floating-photo {
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    opacity: 0; 
+    border: 3px solid rgba(255,255,255,0.2);
+    object-fit: cover;
+    /* Animation definition in JS or below */
+    animation: fadeFloat 8s ease-in-out forwards;  /* Run ONCE, then JS removes it */
+}
+
+@keyframes fadeFloat {
+    0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+    20% { opacity: 0.8; transform: translateY(0) scale(1); }
+    80% { opacity: 0.8; transform: translateY(-20px) scale(1); }
+    100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+}
+
+/* Main Layout */
+.main-content {
+    position: relative;
+    z-index: 100; /* Top Layer (Text/Buttons) - Always accessible */
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically Center */
+    align-items: center; /* Horizontally Center */
+}
+
+.hero-section {
+    text-align: center;
+    /* Remove padding/margins that might offset centering */
+    padding: 20px; 
+    width: 100%;
+}
+
+.section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: var(--accent-color);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(164, 22, 26, 0.8);
+}
+
+.hero-section p {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Cards */
+.cards-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    width: 300px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover { /* Only slight hover */
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card-icon { font-size: 3rem; margin-bottom: 1rem; }
+.card h3 { color: var(--accent-color); margin-bottom: 0.5rem; }
+
+/* Text Block */
+.text-block {
+    max-width: 700px;
+    font-size: 1.4rem;
+    margin: 1rem auto;
+    line-height: 1.8;
+    background: rgba(0,0,0,0.4);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(4px);
+}
+
+/* Buttons */
+/* Buttons */
+.btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+.btn:hover { background-color: var(--secondary-color); transform: scale(1.05); }
+
+/* Title Heart Button */
+.title-heart {
+    background: none;
+    border: none;
+    font-size: 2.1em; /* Adjusted to 2.1x */
+    cursor: pointer;
+    vertical-align: middle;
+    transition: transform 0.2s;
+    line-height: 1;
+    padding: 0 10px;
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
+    animation: heartPulse 2s infinite;
+}
+
+.title-heart:hover {
+    /* transform: scale(1.3); Removed zoom on hover */
+    filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
+    animation: none;
+}
+
+/* Big Heart Button */
+.big-heart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: heartPulse 1.5s infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.6));
+    padding: 0;
+    width: 150px; /* Explicit size */
+    height: 150px;
+}
+
+.big-heart-btn svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible; /* Allow shadow */
+}
+
+.big-heart-btn:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.9));
+    animation: none; /* Stop pulsing on hover to show interaction */
+}
+
+.big-heart-btn:active {
+    transform: scale(0.9);
+}
+
+.click-instruction {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+@keyframes heartPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Heart Particles */
+.heart-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Low base, children will override */
+    overflow: hidden;
+}
+
+.heart {
+    position: absolute;
+    bottom: -10vh; /* Start below screen */
+    opacity: 0;
+    animation: floatUp linear forwards; 
+    /* color/font-size set in JS or defaults */
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(var(--r)); /* Use custom rotation */
+        opacity: 1;
+        bottom: -10%;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(calc(var(--r) + 360deg)); /* Rotate */
+        opacity: 0;
+        bottom: 100%;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem; /* Smaller title on mobile */
+        padding: 0 10px;
+        line-height: 1.3; /* Better spacing for stacked lines */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .title-word {
+        display: block;
+    }
+
+    .title-heart {
+        font-size: 2.5em; /* Keep it big explicitly */
+        display: block; /* Ensure it takes own line if needed, though flex handles it */
+        margin: 10px 0;
+    }
+
+    .hero-section p {
+        font-size: 1.1rem;
+        padding: 0 20px;
+        margin-top: 15px;
+    }
+    
+    .section {
+        padding: 10px; /* Less padding on mobile */
+    }
+}
