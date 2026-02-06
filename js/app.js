@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Responsive Image Size
         const isMobile = window.innerWidth < 768;
-        const minSize = isMobile ? 60 : 150; // Smaller on mobile (was 80)
-        const maxSize = isMobile ? 110 : 250; // Smaller on mobile (was 140)
+        const minSize = isMobile ? 80 : 150; // Increased for mobile (was 60)
+        const maxSize = isMobile ? 130 : 250; // Increased for mobile (was 110)
         const pixelSize = Math.random() * (maxSize - minSize) + minSize;
         
         const widthVW = (pixelSize / window.innerWidth) * 100;
