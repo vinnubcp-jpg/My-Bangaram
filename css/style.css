@@ -405,11 +405,11 @@ body {
 }
 
 #btn-no {
-    padding: 5px 10px !important;
-    /* Tiny padding */
-    font-size: 0.8rem !important;
-    /* Tiny font */
-    border-width: 1px !important;
+    padding: 8px 20px !important;
+        /* Moderate size */
+        font-size: 0.9rem !important;
+        /* Half of Yes size */
+        border-width: 1.5px !important;
 }
 }
 
@@ -598,7 +598,6 @@ body {
     position: relative;
     /* For moving around */
 }
-
 
 .nocolor {
     background: none;

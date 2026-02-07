@@ -401,6 +401,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnNo = document.getElementById('btn-no');
         const btnYes = document.getElementById('btn-yes');
 
+        // EmailJS Initialization
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init("BBdI2Hq4xgTg6Hm-h"); // Configured!
+        }
+
+        function sendValentineEmail(status) {
+            if (typeof emailjs === 'undefined') {
+                console.error("EmailJS not loaded");
+                return;
+            }
+
+            // Check if credentials have been updated
+            const publicKey = "BBdI2Hq4xgTg6Hm-h";
+            const serviceId = "service_mo5cdyn";
+            const templateId = "template_3k5whck";
+
+            if (publicKey === "YOUR_PUBLIC_KEY" || serviceId === "YOUR_SERVICE_ID" || templateId === "YOUR_TEMPLATE_ID") {
+                console.warn("EmailJS credentials not configured.");
+                // Silent in background for the partner
+                return;
+            }
+
+            const templateParams = {
+                to_name: "Venugopal",
+                message: `Your Valentine just clicked: ${status}!`,
+                reply_to: "nallamothuvenugopal@gmail.com"
+            };
+
+            emailjs.send(serviceId, templateId, templateParams)
+                .then(function(response) {
+                   console.log('SUCCESS!', response.status, response.text);
+                   // Silent success to not break the flow
+                }, function(error) {
+                   console.error('FAILED...', error);
+                   // Silent failure for the partner
+                });
+        }
+
         if(btnNo) {
             btnNo.addEventListener('mouseover', () => {
                 moveButtonSafe();
@@ -467,6 +505,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(btnYes) {
             btnYes.addEventListener('click', () => {
+                // Trigger email notification (silent background)
+                sendValentineEmail("YES");
+
                 // 1. Burst of Hearts (like scroll)
                 if (typeof intensifyHearts === 'function') {
                     intensifyHearts();
