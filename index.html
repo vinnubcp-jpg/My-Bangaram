@@ -6,11 +6,42 @@
     <title>Anything for My Bangaram</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <meta name="description" content="A special digital gift for my valentine.">
 </head>
 <body>
+    <!-- Full Screen Heart Zoom Effect -->
+    
+    <div id="heart-zoom-transition" class="heart-zoom-transition">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M16 28.67l-1.93-1.75C7.2 20.67 2.67 16.56 2.67 11.5 2.67 7.37 5.9 4.13 10 4.13c2.31 0 4.54 1.07 6 2.78 1.46-1.71 3.69-2.78 6-2.78 4.1 0 7.33 3.24 7.33 7.37 0 5.06-4.53 9.17-11.4 15.42L16 28.67z" />
+        </svg>
+    </div>
+    
+    <!-- Cinematic Love Overlay -->
+    <div id="love-overlay" class="love-overlay hidden">
+        <div class="handwriting-container">
+            <h1 class="handwriting-text line-1">I Love You</h1>
+            <h1 class="handwriting-text line-2">Rohi Bangaram</h1>
+            <h1 class="handwriting-text line-3">Take My <span id="reveal-heart-btn" class="nocolor">❤️</span> Again..</h1>
+        </div>
+        <p class="click-instruction" style="color: white; margin-top: 50px; opacity: 0; animation: fadeIn 2s forwards 5s;">
+            (Tap to close)</p>
+    </div>
+    
+    <!-- Page 3 Container -->
+    <!-- Page 3 Container -->
+    <div id="page-3" class="page-3">
+        <h1 class="valentine-question">Will you be my Valentine?</h1>
+        <div class="options-container">
+            <button id="btn-yes" class="btn-pill btn-yes">Yes ❤️</button>
+            <button id="btn-no" class="btn-pill btn-no">No</button>
+        </div>
+    </div>
 
     <!-- Global Background for Images -->
     <div id="floating-memories"></div>

@@ -31,6 +31,11 @@ body {
     z-index: 10; /* Middle Layer (Images) */
     overflow: hidden;
     pointer-events: none;
+    transition: opacity 0.5s ease;
+    }
+    
+    #floating-memories.memories-hidden {
+        opacity: 0;
 }
 
 .floating-photo {
@@ -50,6 +55,104 @@ body {
     80% { opacity: 0.8; transform: translateY(-20px) scale(1); }
     100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
 }
+@keyframes revealFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Reveal Photo (Single Image 9) */
+.reveal-photo {
+    position: fixed;
+    z-index: 50;
+
+    /* Magical Border Styles */
+    border: 4px solid #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+
+    /* Natural Size but Constrained */
+    width: auto;
+    height: auto;
+
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    pointer-events: none;
+    /* animation defined in specific media/layout blocks */
+}
+
+.reveal-photo.visible {
+    opacity: 1;
+}
+
+@keyframes revealFloatCentered {
+
+    0%,
+    100% {
+        transform: translateY(-50%);
+    }
+
+    50% {
+        transform: translateY(calc(-50% - 15px));
+    }
+}
+
+/* Desktop: Center Aligned */
+/* Desktop: Split Layout (Image Left) */
+.reveal-photo {
+    max-width: 45vw;
+    max-height: 80vh;
+    left: auto;
+    right: 51%;
+    /* Slightly right of center pivot */
+    top: 50%;
+    transform: translateY(-50%);
+    /* Vertical Center */
+    margin: 0;
+
+    /* Use Centering-Friendly Animation */
+    animation: revealFloatCentered 6s ease-in-out infinite;
+}
+
+/* Desktop: Text Right */
+@media (min-width: 769px) {
+    .handwriting-container {
+        position: absolute;
+        left: 51%;
+        /* Slightly left of center pivot */
+        top: 50%;
+        transform: translateY(-50%);
+        align-items: flex-start;
+        /* Align text to left */
+        text-align: left;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Mobile: Bottom Half Centered */
+    .reveal-photo {
+        max-width: 90vw;
+        max-height: 40vh;
+
+        /* True Horizontal Centering */
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+
+        top: 55vh;
+        transform: none;
+
+        /* Explicit Mobile Animation */
+        animation: revealFloat 6s ease-in-out infinite;
+    }
+}
 
 /* Main Layout */
 .main-content {
@@ -62,6 +165,25 @@ body {
     flex-direction: column;
     justify-content: center; /* Vertically Center */
     align-items: center; /* Horizontally Center */
+    transition: opacity 0.8s ease;
+    }
+    
+    .main-content.content-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Heart Particles - High Z-Index to show over overlay */
+    .heart-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2005;
+        /* User requested "popping hearts" visible in overlay mode */
+        overflow: hidden;
 }
 
 .hero-section {
@@ -138,7 +260,6 @@ body {
 }
 
 /* Buttons */
-/* Buttons */
 .btn {
     background-color: var(--primary-color);
     color: white;
@@ -167,9 +288,21 @@ body {
 }
 
 .title-heart:hover {
-    /* transform: scale(1.3); Removed zoom on hover */
     filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
-    animation: none;
+    /* Pumping air effect: Same rate (2s), large scale */
+        animation: hoverPump 2s infinite ease-in-out;
+    }
+    
+    @keyframes hoverPump {
+    
+        0%,
+        100% {
+            transform: scale(1.3);
+        }
+    
+        50% {
+            transform: scale(1.5);
+        }
 }
 
 /* Big Heart Button */
@@ -215,17 +348,6 @@ body {
 }
 
 /* Heart Particles */
-.heart-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1; /* Low base, children will override */
-    overflow: hidden;
-}
-
 .heart {
     position: absolute;
     bottom: -10vh; /* Start below screen */
@@ -277,5 +399,254 @@ body {
     
     .section {
         padding: 10px; /* Less padding on mobile */
+    }
+}
+
+/* Cinematic Love Overlay */
+.love-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Background is handled by the zoom transition now */
+    background: transparent;
+    z-index: 2000;
+    /* Highest priority */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.love-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* The Zooming Heart Shape background */
+.heart-zoom-transition {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, -50%) scale(0);
+    /* Starts hidden */
+    z-index: 1500;
+    /* Behind text, above content */
+    transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+    /* Slow zoom as requested */
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heart-zoom-transition svg {
+    width: 100%;
+    height: 100%;
+    fill: #E91E63;
+    /* Pinkish Red */
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
+}
+
+/* Zoom to fill screen */
+
+
+.heart-zoom-transition.faded {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Handwriting Effect */
+.handwriting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centers the text blocks horizontally */
+    justify-content: center;
+}
+
+.handwriting-text {
+    font-family: 'Dancing Script', cursive;
+    color: #C21E56;
+    /* Romantic Rose Red fallback */
+    background: linear-gradient(45deg, #D4145A, #FBB03B);
+    /* Rose to Gold Gradient */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    overflow: hidden;
+    /* border-right removed for no cursor */
+    white-space: nowrap;
+    margin: 10px auto;
+    width: 0;
+    /* Start hidden */
+    opacity: 1;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+}
+
+.line-1 {
+    font-size: 5rem;
+}
+
+.line-2 {
+    font-size: 7rem;
+    /* Bigger as requested */
+    margin-top: 0;
+}
+
+.line-3 {
+    font-size: 3rem;
+    /* Smaller text */
+    margin-top: 10px;
+}
+
+.line-3 .nocolor {
+    font-size: 2.5em;
+    /* Significantly larger */
+    vertical-align: middle;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+.line-3 .nocolor:hover {
+    transform: scale(1.3);
+}
+
+/* Third Page */
+.page-3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    /* Above everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+    background: transparent;
+    flex-direction: column;
+    /* Stack question and buttons */
+    gap: 30px;
+}
+
+.page-3.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.valentine-question {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #ff4d6d;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    text-align: center;
+}
+
+.options-container {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-pill {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Pacifico', cursive;
+}
+
+.btn-yes {
+    background: #ff4757;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.btn-yes:hover {
+    transform: scale(1.1);
+    background: #ff2e43;
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+}
+
+.btn-no {
+    background: white;
+    color: #ff4757;
+    border: 2px solid #ff4757;
+    position: relative;
+    /* For moving around */
+}
+
+
+.nocolor {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: initial;
+}
+
+/* Animation Classes */
+.handwriting-text.writing-active-1 {
+    animation:
+        writeText 2.5s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+}
+
+.handwriting-text.writing-active-2 {
+    /* border-right removed */
+    animation:
+        writeText 3s cubic-bezier(0.37, 0, 0.63, 1) forwards 2.5s;
+    /* Delayed start */
+}
+
+.handwriting-text.writing-active-3 {
+    animation:
+        writeText 3s cubic-bezier(0.37, 0, 0.63, 1) forwards 8.5s;
+    /* 2.5s (Line 1) + 3.0s (Line 2) + 3.0s (Wait) = 8.5s Delay */
+}
+
+@keyframes writeText {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .line-1 {
+        font-size: 3rem;
+    }
+
+    .line-2 {
+        font-size: 4.5rem;
+    }
+
+    .line-3 {
+        font-size: 2rem;
+        /* Smaller mobile text */
+    }
+
+    /* Mobile: Text in Top Half */
+    .handwriting-container {
+        position: absolute;
+        top: 25vh;
+        /* Center of top half */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+        margin: 0;
     }
 }
