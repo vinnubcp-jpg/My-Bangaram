@@ -414,6 +414,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     memoryContainer.style.opacity = '0';
                     memoryContainer.innerHTML = ''; // Clear them out
                 }
+                
+                // Randomize "No" button initial position safely
+                if(btnNo) {
+                   moveButtonSafe();
+                }
             });
         }
         
@@ -422,26 +427,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnYes = document.getElementById('btn-yes');
 
         if(btnNo) {
-            btnNo.addEventListener('mouseover', moveButton);
-            btnNo.addEventListener('click', moveButton);
+            btnNo.addEventListener('mouseover', () => {
+                moveButtonSafe();
+                spawnGif();
+            });
+            btnNo.addEventListener('click', () => {
+                moveButtonSafe();
+                spawnGif();
+            });
             
-            function moveButton() {
-                // Determine screen dimensions
+            function moveButtonSafe() {
                 const maxWidth = window.innerWidth - btnNo.offsetWidth;
                 const maxHeight = window.innerHeight - btnNo.offsetHeight;
 
-                // Random Position
-                const randomX = Math.random() * maxWidth;
-                const randomY = Math.random() * maxHeight;
+                // Elements to avoid
+                const questionElement = document.querySelector('.valentine-question');
+                const btnYes = document.getElementById('btn-yes');
                 
-                // Since parent is flex-center, we need strict absolute positioning to move freely
+                let safe = false;
+                let attempts = 0;
+                let randomX, randomY;
+
+                while(!safe && attempts < 50) {
+                    randomX = Math.random() * maxWidth;
+                    randomY = Math.random() * maxHeight;
+                    
+                    // Proposed Rect for No Button
+                    const noRect = {
+                        left: randomX,
+                        top: randomY,
+                        right: randomX + btnNo.offsetWidth,
+                        bottom: randomY + btnNo.offsetHeight
+                    };
+
+                    safe = true; // Assume safe
+
+                    // Check Question Overlap
+                    if(questionElement) {
+                        const qRect = questionElement.getBoundingClientRect();
+                        if (isOverlapping(noRect, qRect)) safe = false;
+                    }
+
+                    // Check Yes Button Overlap
+                    if(btnYes && safe) {
+                        const yRect = btnYes.getBoundingClientRect();
+                        if (isOverlapping(noRect, yRect)) safe = false;
+                    }
+                    
+                    attempts++;
+                }
+                
                 btnNo.style.position = 'absolute';
                 btnNo.style.left = randomX + 'px';
                 btnNo.style.top = randomY + 'px';
-                
-                // Spawn 10.gif
-                spawnGif();
             }
+        }
+        
+        function isOverlapping(rect1, rect2) {
+             return !(rect1.right < rect2.left || 
+                      rect1.left > rect2.right || 
+                      rect1.bottom < rect2.top || 
+                      rect1.top > rect2.bottom);
         }
 
         if(btnYes) {
@@ -479,7 +525,7 @@ function spawnGif() {
     const maxHeight = window.innerHeight - 100;
 
     const img = document.createElement('img');
-    img.src = 'images/10.gif';
+    img.src = 'Images/10.gif'; // Capital 'I' for GitHub Pages
     img.style.position = 'fixed';
     
     // Random Position

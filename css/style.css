@@ -400,6 +400,17 @@ body {
     .section {
         padding: 10px; /* Less padding on mobile */
     }
+.page-3 {
+    padding: 20px;
+}
+
+#btn-no {
+    padding: 5px 10px !important;
+    /* Tiny padding */
+    font-size: 0.8rem !important;
+    /* Tiny font */
+    border-width: 1px !important;
+}
 }
 
 /* Cinematic Love Overlay */
@@ -649,4 +660,22 @@ body {
         text-align: center;
         margin: 0;
     }
+.page-3 {
+    padding: 20px;
+}
+
+#btn-no {
+    padding: 2px 5px !important;
+    /* Extremely tiny padding */
+    font-size: 0.6rem !important;
+    /* Extremely tiny font */
+    border-width: 1px !important;
+}
+
+#btn-yes {
+    padding: 20px 50px !important;
+    /* Large padding */
+    font-size: 1.8rem !important;
+    /* Large font */
+}
 }
