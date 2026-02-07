@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingImages = [
         'Images/1.jpg', 'Images/2.jpg', 'Images/3.jpg', 
         'Images/4.jpg', 'Images/5.jpg', 'Images/6.jpg', 
-        'Images/7.jpg', 'Images/8.png'
+        'Images/7.jpg', 'Images/8.png', 'Images/12.jpg', 
+        'Images/13.jpg'
     ];
     
     // Reveal Page Images (Only 9)
@@ -345,36 +346,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
             // Add closing mechanism (Only if NOT clicking the heart)
-            loveOverlay.onclick = (e) => {
-                // If clicked on the heart button, do not close!
-                if(e.target.closest('#reveal-heart-btn')) return;
-
-                loveOverlay.classList.add('hidden');
-                zoomTransition.classList.remove('active');
-                
-                // ... (rest of reset logic)
-
-                zoomTransition.classList.remove('faded');
-                mainContent.classList.remove('content-hidden');
-                memoryContainer.classList.remove('memories-hidden');
-                isRevealActive = false; 
-                
-                // FORCE RESET IMAGES:
-                // 1. Remove Reveal Photo
-                const revealPhoto = document.querySelector('.reveal-photo');
-                if (revealPhoto) revealPhoto.remove();
-                
-                // 2. Restart Floating Photos (1-8)
-                // Just calling spawnPhoto once in a loop will restart the self-perpetuating cycle
-                for (let i = 0; i < maxPhotos; i++) {
-                     setTimeout(() => spawnPhoto(), i * 1000); 
-                }
-                
-                // Reset writing
-                if(line1) line1.classList.remove('writing-active-1');
-                if(line2) line2.classList.remove('writing-active-2');
-                if(line3) line3.classList.remove('writing-active-3');
-            };
+            // Add closing mechanism (Only if NOT clicking the heart)
+            // loveOverlay.onclick = (e) => {
+            //     // DISABLED: One-way flow only.
+            // };
         });
         // Page 3 Transition
         const revealHeartBtn = document.getElementById('reveal-heart-btn');
@@ -492,18 +467,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(btnYes) {
             btnYes.addEventListener('click', () => {
-                // Celebration!
-                // For now, let's just show an alert or a simple confetti effect.
-                // Or maybe spawn a ton of hearts.
+                // 1. Burst of Hearts (like scroll)
+                if (typeof intensifyHearts === 'function') {
+                    intensifyHearts();
+                    // Call it multiple times for extra effect? User said "more once"
+                    setTimeout(intensifyHearts, 200);
+                    setTimeout(intensifyHearts, 400);
+                }
                 
-                spawnConfetti();
+                // 2. Clear the whole screen (Page 3 specific)
+                // We want to keep the background (body bg + floating hearts)
+                // But remove the question and buttons.
+                
+                const page3Content = document.getElementById('page-3');
+                if(page3Content) {
+                   page3Content.innerHTML = ''; // Removes question and buttons
+                   // Or just hide them:
+                   // page3Content.style.display = 'none'; 
+                   // But user said "clear the whole screen ... normal heart symbols popping up"
+                   // So removing content is safer to ensure clean state.
+                }
 
-                // Change question text?
-                const questionElement = document.querySelector('.valentine-question');
-                if(questionElement) questionElement.textContent = "YAYYY! I Love You! ❤️";
+                // 3. Optional: Spawn confetti as well? User didn't explicitly forbid it, 
+                // but said "push heart symbols". sticking to intensifyHearts is safer 
+                // but spawnConfetti uses spawnHeart too. Let's keep spawnConfetti for good measure
+                // or replace it if strictly "like scroll".
+                // User said "like that of how we push when scrolling".
+                // Scroll calls intensifyHearts.
                 
-                // Hide No button
-                if(btnNo) btnNo.style.display = 'none';
+                // Let's also ensure the No button is gone (handled by innerHTML = '')
+                
+                // 4. Show Final Image (11.gif)
+                spawnFinalGif();
             });
         }
         
@@ -517,6 +512,23 @@ function spawnConfetti() {
            spawnHeart();
        }, i * 50);
    }
+}
+
+function spawnFinalGif() {
+    const img = document.getElementById('final-gift');
+    const txt = document.getElementById('final-text');
+    
+    if (img) {
+        // Force reflow
+        void img.offsetWidth;
+        img.classList.add('visible');
+    }
+    
+    if (txt) {
+        // Force reflow
+        void txt.offsetWidth;
+        txt.classList.add('visible');
+    }
 }
 
 function spawnGif() {

@@ -679,3 +679,118 @@ body {
     /* Large font */
 }
 }
+
+/* Final GIF - Pre-existing State */
+#final-gift {
+    position: fixed !important;
+    top: 60% !important;
+    /* Moved down to make room for text above */
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0);
+    transform-origin: center center;
+
+    width: auto;
+    height: auto;
+    max-width: 90vw;
+    /* Reduced max-height slightly to ensure it fits with text */
+    max-height: 55vh;
+
+    border: 12px solid white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 4000;
+
+    opacity: 0;
+    pointer-events: none;
+    /* Hide interaction until visible */
+
+    /* Transition for smooth pop-in */
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+}
+
+#final-gift.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Final Text - Pre-existing State */
+#final-text {
+    position: fixed !important;
+    top: 25% !important;
+    /* Moved down significantly */
+    left: 50% !important;
+    transform: translateX(-50%) scale(0);
+    transform-origin: center center;
+
+    font-family: 'Dancing Script', cursive;
+    font-size: 5rem;
+    /* Bigger */
+    font-weight: bold;
+    /* Bold */
+    text-align: center;
+    /* Center multi-line */
+    line-height: 1.2;
+
+    color: #ff4d6d;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 0, 100, 0.5);
+    z-index: 4001;
+    /* Above GIF */
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+    transition-delay: 0.2s;
+    /* Slight delay after GIF starts */
+}
+
+#final-text.visible {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* Mobile Adjustment for Final Text */
+@media (max-width: 768px) {
+    #final-text {
+        font-size: 3rem;
+        /* Bigger on mobile too */
+        top: 25% !important;
+        /* Consistent positioning */
+    }
+
+    #final-gift {
+        top: 65% !important;
+        /* Slightly lower on mobile */
+        max-height: 45vh;
+        /* Smaller image on mobile to fit text */
+    }
+}
+
+/* Landing Page Text Animation */
+.hero-section .fade-in {
+    opacity: 0;
+    animation: fadeIn 2s ease-in forwards;
+}
+
+.hero-section h1.fade-in {
+    animation-delay: 10s;
+    /* Increased to 10s per request */
+}
+
+.hero-section p.fade-in {
+    animation-delay: 11.5s;
+    /* Appear slightly after title */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
