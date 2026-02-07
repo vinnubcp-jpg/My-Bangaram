@@ -794,3 +794,11 @@ body {
         transform: translateY(0);
     }
 }
+
+/* Mobile Adjustment for Reveal Image */
+@media (max-width: 768px) {
+    .reveal-photo {
+        top: 40% !important;
+        /* Move up slightly on mobile (Default is implicitly 50% via transform/centering logic) */
+    }
+}
